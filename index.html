@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="创新科技 - 为您提供前沿的智能解决方案">
+    <meta name="keywords" content="科技,创新,智能产品,解决方案">
+    <title>创新科技 | SmartTech</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* 导航栏样式 */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            display: flex;
+            align-items: center;
+            padding: 10px 5%;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .logo {
+            width: 150px;
+            margin-right: 50px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: #007bff;
+        }
+
+        /* 滑动内容容器 */
+        .slides-container {
+            display: flex;
+            overflow-x: auto;
+            scroll-behavior: smooth;
+            margin-top: 70px;
+            height: calc(100vh - 70px);
+        }
+
+        /* 单个幻灯片样式 */
+        .slide {
+            min-width: 100vw;
+            height: 100%;
+            padding: 50px 10%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+
+        .slide:nth-child(odd) {
+            background: #f8f9fa;
+        }
+
+        .slide h2 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .slide p {
+            font-size: 1.2em;
+            color: #666;
+            max-width: 800px;
+            line-height: 1.6;
+        }
+
+        /* 移动端优化 */
+        @media (max-width: 768px) {
+            nav {
+                padding: 10px 3%;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+            
+            .slide {
+                padding: 30px 5%;
+            }
+            
+            .slide h2 {
+                font-size: 2em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <img src="logo.png" alt="创新科技 Logo" class="logo">
+        <div class="nav-links">
+            <a href="#home">首页</a>
+            <a href="#products">产品</a>
+            <a href="#about">关于我们</a>
+            <a href="#contact">联系我们</a>
+        </div>
+    </nav>
+
+    <div class="slides-container">
+        <section id="home" class="slide">
+            <h2>欢迎来到创新科技</h2>
+            <p>引领未来的智能解决方案提供商</p>
+        </section>
+
+        <section id="products" class="slide">
+            <h2>我们的产品</h2>
+            <p>探索我们创新的智能产品系列</p>
+        </section>
+
+        <section id="about" class="slide">
+            <h2>关于我们</h2>
+            <p>致力于科技创新20年</p>
+        </section>
+
+        <section id="contact" class="slide">
+            <h2>联系我们</h2>
+            <p>获取定制解决方案</p>
+        </section>
+    </div>
+
+    <script>
+        // 平滑滚动处理
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                target.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start',
+                    inline: 'nearest'
+                });
+            });
+        });
+
+        // 滚动时更新导航状态
+        const slidesContainer = document.querySelector('.slides-container');
+        const navLinks = document.querySelectorAll('.nav-links a');
+
+        slidesContainer.addEventListener('scroll', () => {
+            const currentSlide = Math.round(slidesContainer.scrollLeft / window.innerWidth);
+            navLinks.forEach((link, index) => {
+                link.style.color = index === currentSlide ? '#007bff' : '#333';
+            });
+        });
+
+        // 触摸滑动处理
+        let touchStartX = 0;
+        slidesContainer.addEventListener('touchstart', e => {
+            touchStartX = e.touches[0].clientX;
+        });
+
+        slidesContainer.addEventListener('touchend', e => {
+            const touchEndX = e.changedTouches[0].clientX;
+            const diff = touchStartX - touchEndX;
+            
+            if (Math.abs(diff) > 50) {
+                const currentIndex = Math.round(slidesContainer.scrollLeft / window.innerWidth);
+                const newIndex = diff > 0 
+                    ? Math.min(currentIndex + 1, 3)
+                    : Math.max(currentIndex - 1, 0);
+                
+                slidesContainer.scrollTo({
+                    left: newIndex * window.innerWidth,
+                    behavior: 'smooth'
+                });
+            }
+        });
+    </script>
+</body>
+</html>
